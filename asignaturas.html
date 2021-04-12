@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' lang="es">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Materias por carrera</title>
+    <link rel="shortcut icon" type="image/png" href="img/favicon.ico">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <script src="/popper/popper.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <link href="/fontawesome/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/DataTables/dataTables.min.css" />
+    <script type="text/javascript" src="/DataTables/dataTables.min.js"></script>
+    <script type="text/javascript" src="js/tabla.js"></script>
+</head>
+
+<body>
+    <!-- barra de navegacion  -->
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark" style="background-color: rgb(24, 57, 106);">
+        <a class="navbar-brand" href="index.html" data-toggle="tooltip" data-placement="bottom" title="Inicio">
+            <img src="img/tecnm.png" width="120">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item ">
+                    <a class="nav-link" href="concentrado.html">Concentrado</a>
+                </li>
+                <li class="nav-item dropdown nav-item active">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                        Materias
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item nav-item active" href="asignaturas.html">Por carrera</a>
+                        <a class="dropdown-item" href="materias.html">Listado</a>
+                        <a class="dropdown-item" href="clases.html">Clases</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown nav-item">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown">
+                        Personal docente
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item nav-item active" href="docentes.html">Personal docente</a>
+                        <a class="dropdown-item " href="plazas.html">Plazas</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="administrativos.html">Personal no docente</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="honorarios.html">Honorarios</a>
+                </li>
+            </ul>
+        </div>
+        <ul class="navbar-nav flex-row ml-sm-auto d-none d-sm-flex">
+            <li class="nav-item">
+                <a id="boton-agregar" class="nav-link p-2" href="#modal-agregar" data-toggle="modal">
+                    <i class="fas fa-plus" data-toggle="tooltip" data-placement="bottom" title="Agregar asignatura"></i>
+                </a>
+            </li>
+            <!-- <li class="nav-item">
+                <a id="boton-clase" class="nav-link" href="#modal-clases" data-toggle="modal">
+                    <i class="fas fa-chalkboard-teacher" data-toggle="tooltip" data-placement="bottom"
+                        title="Agregar clase"></i>
+                </a>
+            </li> -->
+            <li class="nav-item">
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </li>
+        </ul>
+    </nav>
+    <!-- Selector de carreras  -->
+    <div class="selector-principal">
+        <select class="carreras custom-select"></select>
+    </div>
+    <!-- tabla de datos -->
+    <div class="table-responsive">
+        <table id="tabla-asignaturas" class="table table-bordered table-hover table-sm">
+            <thead class="thead-dark">
+                <tr>
+                    <th rowspan="2">Semestre</th>
+                    <th>Periodo escolar</th>
+                    <th rowspan="2">Horas semanales por materia</th>
+                    <th rowspan="2">No. de grupos por materia</th>
+                    <th rowspan="2">Total de horas semanales</th>
+                    <th rowspan="2">Cantidad total de alumnos por materia</th>
+                    <th colspan="6">No. de profesor que imparte la materia según grupos</th>
+                    <th colspan="2">Total de horas</th>
+                    <th colspan="5">Cantidad de horas que se necesitan debido</th>
+                    <th colspan="2">Acciones</th>
+                </tr>
+                <tr>
+                    <th>Nombre de las materias que se ofrecen por semestre</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                    <th>5</th>
+                    <th>6</th>
+                    <th>Cubiertas</th>
+                    <th>Necesidad</th>
+                    <th>CN</th>
+                    <th>AS</th>
+                    <th>BC</th>
+                    <th>CPA</th>
+                    <th>H</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th colspan="2">Total</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th colspan="6" class='bg-secondary'></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th colspan="2" class='bg-secondary'></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- Modal de insercion -->
+    <div class="modal fade" id="modal-agregar" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="titulo-agregar">Nueva asignatura</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form id="form-agregar" novalidate>
+                    <div class="modal-body">
+                        <input type="text" name="operacion" value="insertar" hidden>
+                        <div class="form-row">
+                            <div class="selector-agregar col-md-7 mb-3">
+                                <label for="carrera"><b>Carrera</b></label>
+                                <select id="input-agregar" class="carrera form-control" name="carrera"></select>
+                            </div>
+                            <div class="col-md-5 mb-3">
+                                <label for="semestre"><b>Semestre</b></label>
+                                <input class="form-control" type="number"
+                                    placeholder="Ingresa el semestre de la materia" name="semestre" min="1" max="14"
+                                    required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un semestre válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Semestre válido
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="selector-agregar col-md-8 mb-3">
+                                <label for="materia"><b>Materia</b></label>
+                                <select class="materia form-control" name="materia"></select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="alumnos"><b>Alumnos</b></label>
+                                <input class="form-control" type="number"
+                                    placeholder="Ingresa el total de alumnos por materia" name="alumnos" min="1"
+                                    max="999" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un numero de alumnos válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Numero de alumnos válido
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancelar">
+                        <button type="submit" class="btn btn-success">Agregar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de eliminacion -->
+    <div id="modal-eliminar" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Eliminar asignatura</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form id="form-eliminar" novalidate>
+                    <div class="modal-body">
+                        <input type="text" name="operacion" value="eliminar" hidden>
+                        <input class="id" type="text" name="id" hidden>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="carrera"><b>Carrera</b></label>
+                                <input class="carrera form-control" type="text" name="carrera" disabled>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="materia"><b>Materia</b></label>
+                                <input class="materia form-control" type="text" name="materia" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col">
+                                <p>Esta acción no se podrá deshacer</p>
+                            </div>
+                            <div class="col">
+                                <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancelar">
+                                <button id="input-eliminar" type="submit" class="btn btn-danger">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de edicion -->
+    <div id="modal-editar" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Editar asignatura</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form id="form-editar" novalidate>
+                    <div id="modal-editar" class="modal-body">
+                        <input type="text" name="operacion" value="editar" hidden>
+                        <input class="id" type="text" name="id" hidden>
+                        <div class="form-row">
+                            <div class="selector-editar col-md-7 mb-3">
+                                <label for="carrera"><b>Carrera</b></label>
+                                <select id="input-editar" class="carrera form-control" name="carrera"></select>
+                            </div>
+                            <div class="col-md-5 mb-3">
+                                <label for="semestre"><b>Semestre</b></label>
+                                <input class="semestre form-control" type="number" name="semestre" min="1" max="14"
+                                    required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un semestre válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Semestre válido
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-4 mb-3">
+                                <label for="alumnos"><b>Alumnos</b></label>
+                                <input class="alumnos form-control" type="number" name="alumnos" min="1" max="999"
+                                    required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un numero de alumnos válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Numero de alumnos válido
+                                </div>
+                            </div>
+                            <div class="selector-editar col-md-8 mb-3">
+                                <label for="materia"><b>Materia</b></label>
+                                <select class="materia form-control" name="materia"></select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-4 mb-3">
+                                <label for="as"><b>Año sabatico</b></label>
+                                <input class="as form-control" type="number" name="as" min="0" max="99" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un numero válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Numero válido
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="bc"><b>Beca comisión</b></label>
+                                <input class="bc form-control" type="number" name="bc" min="0" max="99" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un numero válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Numero válido
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="cpa"><b>Cubierto con plaza administrativa</b></label>
+                                <input class="cpa form-control" type="number" name="cpa" min="0" max="99" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un numero válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Numero válido
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col">
+                                <p>Esta acción no se podrá deshacer</p>
+                            </div>
+                            <div class="col">
+                                <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancelar">
+                                <button type="submit" class="btn btn-warning">Editar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script type='text/javascript' src="js/asignaturas.js"></script>
+
+</html>

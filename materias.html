@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' lang="es">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Listado de materias</title>
+    <link rel="shortcut icon" type="image/png" href="img/favicon.ico">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <script src="/popper/popper.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <link href="/fontawesome/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/DataTables/dataTables.min.css" />
+    <script type="text/javascript" src="/DataTables/dataTables.min.js"></script>
+    <script type="text/javascript" src="js/tabla.js"></script>
+</head>
+
+<body>
+    <!-- barra de navegacion  -->
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark" style="background-color: rgb(24, 57, 106);">
+        <a class="navbar-brand" href="index.html" data-toggle="tooltip" data-placement="bottom" title="Inicio">
+            <img src="img/tecnm.png" width="120">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item ">
+                    <a class="nav-link" href="concentrado.html">Concentrado</a>
+                </li>
+                <li class="nav-item dropdown nav-item active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown">
+                        Materias
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item " href="asignaturas.html">Por carrera</a>
+                        <a class="dropdown-item nav-item active" href="materias.html">Listado</a>
+                        <a class="dropdown-item" href="clases.html">Clases</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown nav-item">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown">
+                        Personal docente
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item nav-item active" href="docentes.html">Personal docente</a>
+                        <a class="dropdown-item " href="plazas.html">Plazas</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="administrativos.html">Personal no docente</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="honorarios.html">Honorarios</a>
+                </li>
+            </ul>
+        </div>
+        <ul class="navbar-nav flex-row ml-sm-auto d-none d-sm-flex">
+            <li class="nav-item">
+                <a id="boton-agregar" class="nav-link" href="#modal-agregar" data-toggle="modal">
+                    <i class="fas fa-plus" data-toggle="tooltip" data-placement="bottom" title="Agregar materia">
+                    </i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </li>
+        </ul>
+    </nav>
+    <!-- Tabla de datos -->
+    <div class="table-responsive">
+        <table id="tabla-materias" class="table table-bordered table-hover table-sm">
+            <thead class="thead-dark">
+                <tr>
+                    <th rowspan="2">Clave</th>
+                    <th rowspan="2">Nombre</th>
+                    <th rowspan="2">Horas teóricas</th>
+                    <th rowspan="2">Horas prácticas</th>
+                    <th rowspan="2">Área de conocimiento</th>
+                    <th colspan="2">Acciones</th>
+                </tr>
+                <tr>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <!-- Modal de insercion -->
+    <div class="modal fade" id="modal-agregar" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Nueva materia</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form id="form-agregar" novalidate>
+                    <div class="modal-body">
+                        <input type="text" name="operacion" value="insertar" hidden>
+                        <div class="selector-agregar form-group">
+                            <label for="area">Area de conocimiento</label>
+                            <select id="input-agregar" name="area" class="areas form-control"></select>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-5 mb-3">
+                                <label for="clave"><b>Clave</b></label>
+                                <input class="form-control" type="text" placeholder="Ingresa la clave de la materia"
+                                    name="clave" minlength="8" maxlength="10" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa una clave válida
+                                </div>
+                                <div class="valid-feedback">
+                                    Clave válida
+                                </div>
+                            </div>
+                            <div class="col-md-7 mb-3">
+                                <label for="nombre-asignatura"><b>Nombre</b></label>
+                                <input class="form-control" type="text" placeholder="Ingresa el nombre de la materia"
+                                    name="nombre-asignatura" minlength="1" maxlength="60" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un nombre válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Numero de materia válido
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="horas-teoricas"><b>Horas teoricas</b></label>
+                                <input class="form-control" type="number"
+                                    placeholder="Ingresa el numero de horas teoricas semanales" name="horas-teoricas"
+                                    min="0" max="9" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un número de horas válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Número de horas válido
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="horas-practicas"><b>Horas practicas</b></label>
+                                <input class="form-control" type="number"
+                                    placeholder="Ingresa el numero de horas practicas semanales" name="horas-practicas"
+                                    min="0" max="9" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un número de horas válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Número de horas válido
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input class="btn btn-secondary" type="button" data-dismiss="modal" value="Cancelar">
+                        <button type="submit" class="btn btn-success">Agregar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de eliminacion -->
+    <div id="modal-eliminar" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Eliminar materia</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form id="form-eliminar" novalidate>
+                    <div class="modal-body">
+                        <input type="text" name="operacion" value="eliminar" hidden>
+                        <input class="clave" type="text" name="clave" hidden>
+                        <div class="form-row">
+                            <div class="col-md-5 mb-3">
+                                <label for="clave"><b>Clave</b></label>
+                                <input class="id form-control" type="text" name="id" disabled>
+                            </div>
+                            <div class="col-md-7 mb-3">
+                                <label for="nombre-asignatura"><b>Nombre</b></label>
+                                <input class="nombre-asignatura form-control" type="text" name="nombre-asignatura"
+                                    disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col">
+                                <p>Esta acción no se podrá deshacer</p>
+                            </div>
+                            <div class="col">
+                                <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancelar">
+                                <button id="input-eliminar" type="submit" class="btn btn-danger">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de edicion -->
+    <div id="modal-editar" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Editar materia</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form id="form-editar" novalidate>
+                    <div class="modal-body">
+                        <input type="text" name="operacion" value="editar" hidden>
+                        <input class="clave" type="text" name="clave" hidden>
+                        <div class="selector-editar form-group">
+                            <label for="area">Area de conocimiento</label>
+                            <select id="input-editar" name="area" class="areas form-control"></select>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-5 mb-3">
+                                <label for="clave"><b>Clave</b></label>
+                                <input class="id form-control" type="text" name="id" minlength="8" maxlength="10"
+                                    required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa una clave válida
+                                </div>
+                                <div class="valid-feedback">
+                                    Clave válida
+                                </div>
+                            </div>
+                            <div class="col-md-7 mb-3">
+                                <label for="nombre-asignatura"><b>Nombre</b></label>
+                                <input class="nombre-asignatura form-control" type="text" name="nombre-asignatura"
+                                    minlength="1" maxlength="60" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un nombre válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Numero de materia válido
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="horas-teoricas"><b>Horas teoricas</b></label>
+                                <input class="horas-teoricas form-control" type="number" name="horas-teoricas" min="0"
+                                    max="9" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un número de horas válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Número de horas válido
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="horas-practicas"><b>Horas practicas</b></label>
+                                <input class="horas-practicas form-control" type="number" name="horas-practicas" min="0"
+                                    max="9" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un número de horas válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Número de horas válido
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col">
+                                <p>Esta acción no se podrá deshacer</p>
+                            </div>
+                            <div class="col">
+                                <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancelar">
+                                <button type="submit" class="btn btn-warning">Editar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script type='text/javascript' src="js/materias.js"></script>
+
+</html>

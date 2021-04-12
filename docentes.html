@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' lang="es">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Personal Docente</title>
+    <link rel="shortcut icon" type="image/png" href="img/favicon.ico">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <script src="/popper/popper.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <link href="/fontawesome/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/DataTables/dataTables.min.css" />
+    <script type="text/javascript" src="/DataTables/dataTables.min.js"></script>
+    <script type="text/javascript" src="js/tabla.js"></script>
+</head>
+
+<body>
+    <!-- Barra de navegacion -->
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark" style="background-color: rgb(24, 57, 106);">
+        <a class="navbar-brand" href="index.html" data-toggle="tooltip" data-placement="bottom" title="Inicio">
+            <img src="img/tecnm.png" width="120">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item ">
+                    <a class="nav-link" href="concentrado.html">Concentrado </a>
+                </li>
+                <li class="nav-item dropdown nav-item">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                        Materias
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item nav-item active" href="asignaturas.html">Por carrera</a>
+                        <a class="dropdown-item" href="materias.html">Listado</a>
+                        <a class="dropdown-item" href="clases.html">Clases</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown nav-item active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown">
+                        Personal docente
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item nav-item active" href="docentes.html">Personal docente</a>
+                        <a class="dropdown-item " href="plazas.html">Plazas</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="administrativos.html">Personal no docente</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="honorarios.html">Honorarios</a>
+                </li>
+            </ul>
+        </div>
+        <ul class="navbar-nav flex-row ml-sm-auto d-none d-sm-flex">
+            <li class="nav-item p-2">
+                <a id="boton-agregar" class="nav-link" href="#modal-agregar" data-toggle="modal">
+                    <i class="fas fa-plus" data-toggle="tooltip" data-placement="bottom" title="Agregar docente">
+                    </i>
+                </a>
+            </li>
+            <li class="nav-item p-2">
+                <a id="boton-administrativos" class="nav-link" href="#modal-administrativos" data-toggle="modal">
+                    <i class="fas fa-user-tie" data-toggle="tooltip" data-placement="bottom"
+                        title="Agregar docente administrativo">
+                    </i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </li>
+        </ul>
+    </nav>
+    <!-- Selector de areas educativas -->
+    <div class="selector-principal">
+        <select class="areas custom-select"></select>
+    </div>
+    <!-- tabla de datos -->
+    <div class="table-responsive">
+        <table id="tabla-docentes" class="table table-bordered table-hover table-sm">
+            <thead class="thead-dark">
+                <tr>
+                    <th rowspan="3">No.</th>
+                    <th>Periodo escolar</th>
+                    <th rowspan="3">Tipo de mov.</th>
+                    <th rowspan="3">Año de ingreso al S.N.I.T</th>
+                    <th colspan="4">Plaza(s)</th>
+                    <th rowspan="3">Total de horas de nombramiento (s)</th>
+                    <th colspan="2">Número de horas frente a grupo</th>
+                    <th rowspan="3">Nombre completo del puesto administrativo o actividad que realiza o justificación
+                    </th>
+                    <th colspan="7">Materias por carrera</th>
+                    <th colspan="2"> Situación: Pasante de técnico (PT), Titulo de tecnico(TT),
+                        Titulo de
+                        licenciatura (TL), Pasante de licenciatura(PL), Con grado(CG) y sin grado (SG)
+                    </th>
+                    <th colspan="2">Acciones</th>
+                </tr>
+                <tr>
+                    <th rowspan="2">Nombre del docente</th>
+                    <th rowspan="2">Uni/Sub</th>
+                    <th rowspan="2">Categoria</th>
+                    <th rowspan="2">Horas</th>
+                    <th rowspan="2">Diagonal</th>
+                    <th rowspan="2">Lic.</th>
+                    <th rowspan="2">Posg.</th>
+                    <th rowspan="1" colspan="2">Materias que imparte</th>
+                    <th rowspan="2">Area de conocimiento</th>
+                    <th colspan="2">Horas sem/mes por materia</th>
+                    <th rowspan="2">Cantidad de grupos</th>
+                    <th rowspan="2">Carrera</th>
+                    <th rowspan="2">Grado académico y nombre completo de licenciatura(s)</th>
+                    <th rowspan="2">Situación</th>
+                    <th rowspan="2">Editar</th>
+                    <th rowspan="2">Eliminar</th>
+                </tr>
+                <tr>
+                    <th>Clave</th>
+                    <th>Nombre</th>
+                    <th>T</th>
+                    <th>P</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th colspan='2'>Totales</th>
+                    <td class='bg-secondary' colspan='6'></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class='bg-secondary' colspan='10'></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <!-- Modal de insercion  -->
+    <div class="modal fade" id="modal-agregar" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Nuevo docente</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form id="form-agregar" novalidate>
+                    <div class="modal-body">
+                        <input type="text" name="operacion" value="insertar" hidden>
+                        <div class="form-row">
+                            <div class="selector-agregar col-md-6 mb-3">
+                                <label for="area"><b>Área de conocimiento</b></label>
+                                <select id="input-agregar" class="areas form-control" name="area"></select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="id-personal"><b>Número</b></label>
+                                <input class="form-control" type="number" placeholder="Ingresa el numero del personal"
+                                    name="id-personal" min="1" max="9999" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un número de personal válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Numero de personal válido
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="apellidos-personal"><b>Apellidos </b></label>
+                                <input class="form-control" type="text" placeholder="Apellidos del personal"
+                                    name="apellidos-personal" minlength="1" maxlength="60" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un apellido válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Apellido válido
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="nombre-personal"><b>Nombre(s)</b></label>
+                                <input class="form-control" type="text" placeholder="Nombre(s) del personal"
+                                    name="nombre-personal" minlength="1" maxlength="60" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un nombre válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Apellido válido
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="ingreso"><b>Año de ingreso al S.N.I.T</b></label>
+                                <input class="form-control" type="number" placeholder="Ingresa el año de ingreso"
+                                    name="ingreso" min="1950" max="2050" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un año válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Año válido
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="causa"><b>Causa</b></label>
+                                <input class="form-control" type="text" placeholder="Ingresa la causa" name="causa"
+                                    minlength="1" maxlength="60" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa una causa válida
+                                </div>
+                                <div class="valid-feedback">
+                                    Año válida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="escolaridad"><b>Escolaridad del profesor</b></label>
+                                <input class="form-control" type="text"
+                                    placeholder="Ingresa la escolaridad del profesor" name="escolaridad" minlength="1"
+                                    maxlength="80" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa una escolaridad válida
+                                </div>
+                                <div class="valid-feedback">
+                                    Escolaridad válida
+                                </div>
+                            </div>
+                            <div class="selector-agregar col-md-6 mb-3">
+                                <label for="situacion"><b>Situacion</b></label>
+                                <select class="form-control" name="situacion">
+                                    <option value="PT"> Pasante de Técnico </option>
+                                    <option value="TT"> Título de Técnico </option>
+                                    <option value="TL"> Título de Licenciatura </option>
+                                    <option value="PL"> Pasante de Licenciatura </option>
+                                    <option value="CG"> Con Grado </option>
+                                    <option value="SG"> Sin Grado </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancelar">
+                        <button type="submit" class="btn btn-success">Agregar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de eliminacion -->
+    <div id="modal-eliminar" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Eliminar docente</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form id="form-eliminar" novalidate>
+                    <div class="modal-body">
+                        <input type="text" name="operacion" value="eliminar" hidden>
+                        <input class="id-personal" type="text" name="id-personal" hidden>
+                        <input class="docente" type="text" name="docente" hidden>
+                        <div class="form-row">
+                            <label for="numero-de-personal"><b>Numero</b></label>
+                            <input class="numero-de-personal form-control" type="text" name="numero-de-personal"
+                                disabled>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="apellidos-personal"><b>Apellidos</b></label>
+                                <input class="apellidos-personal form-control" type="text" name="apellidos-personal"
+                                    disabled>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="nombre-personal"><b>Nombre</b></label>
+                                <input class="nombre-personal form-control" type="text" name="nombre-personal" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col">
+                                <p>Esta acción no se podrá deshacer</p>
+                            </div>
+                            <div class="col">
+                                <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancelar">
+                                <button id="input-eliminar" type="submit" class="btn btn-danger">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal editar  -->
+    <div id="modal-editar" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Editar docente</h4>
+                    <button type=" button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form id="form-editar" novalidate>
+                    <div class="modal-body">
+                        <input type="text" name="operacion" value="editar" hidden>
+                        <input class="id-personal" type="text" name="id-personal" hidden>
+                        <div class="form-row">
+                            <div class="selector-editar col-md-6 mb-3">
+                                <label for="area"><b>Area de conocimiento</b></label>
+                                <select id="input-editar" name="area" class="areas form-control"></select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="numero-de-personal"><b>Numero</b></label>
+                                <input type="number" class="numero-de-personal form-control" name="numero-de-personal"
+                                    min="1" max="9999" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un número de personal válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Numero de personal válido
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="apellidos-personal"><b>Apellidos</b></label>
+                                <input class="apellidos-personal form-control" type="text" name="apellidos-personal"
+                                    minlength="1" maxlength="60" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un apellido válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Apellido válido
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="nombre-personal"><b>Nombre(s)</b></label>
+                                <input class="nombre-personal form-control" type="text" name="nombre-personal"
+                                    minlength="1" maxlength="60" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un nombre válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Apellido válido
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="selector-editar col-md-6 mb-3">
+                                <label for="ingreso"><b>Año de ingreso al S.N.I.T</b></label>
+                                <input type="number" class="ingreso form-control" name="ingreso" min="1950" max="2050"
+                                    required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa un año válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Año válido
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="causa"><b>Causa</b></label>
+                                <input class="causa form-control" type="text" name="causa" minlength="1" maxlength="60"
+                                    required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa una causa válida
+                                </div>
+                                <div class="valid-feedback">
+                                    Año válida
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="escolaridad"><b>Escolaridad</b></label>
+                                <input class="escolaridad form-control" type="text" name="escolaridad" minlength="1"
+                                    maxlength="80" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa una escolaridad válida
+                                </div>
+                                <div class="valid-feedback">
+                                    Escolaridad válida
+                                </div>
+                            </div>
+                            <div class="selector-editar col-md-6 mb-3">
+                                <label for="situacion"><b>Situacion</b></label>
+                                <select name="situacion" class="situacion form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col">
+                                <p>Esta acción no se podrá deshacer</p>
+                            </div>
+                            <div class="col">
+                                <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancelar">
+                                <button type="submit" class="btn btn-warning">Editar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal administrativos  -->
+    <div class="modal fade" id="modal-administrativos" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Personal administrativo</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form id="form-administrativos" novalidate>
+                    <div class="modal-body">
+                        <input type="text" name="operacion" value="administrativos" hidden>
+                        <div class="form-row">
+                            <div class="selector-administrativos col-md-5 mb-3">
+                                <label for="area"><b>Area de conocimiento</b></label>
+                                <select id="input-administrativos" class="areas form-control" name="area"></select>
+                            </div>
+                            <div class="selector-administrativos col-md-7 mb-3">
+                                <label for="id-personal"><b>Personal administrativo</b></label>
+                                <select name="id-personal" class="personal form-control"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancelar">
+                        <button type="submit" class="btn btn-primary">Registrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script type='text/javascript' src="js/docentes.js"></script>
+
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' lang="es">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Clases</title>
+    <link rel="shortcut icon" type="image/png" href="img/favicon.ico">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <script src="/popper/popper.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <link href="/fontawesome/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/DataTables/dataTables.min.css" />
+    <script type="text/javascript" src="/DataTables/dataTables.min.js"></script>
+    <script type="text/javascript" src="js/tabla.js"></script>
+</head>
+
+<body>
+    <!-- Barra de navegacion -->
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark" style="background-color: rgb(24, 57, 106);">
+        <a class="navbar-brand" href="index.html" data-toggle="tooltip" data-placement="bottom" title="Inicio">
+            <img src="img/tecnm.png" width="120">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item ">
+                    <a class="nav-link" href="concentrado.html">Concentrado</a>
+                </li>
+                <li class="nav-item dropdown nav-item active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown">
+                        Materias
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item " href="asignaturas.html">Por carrera</a>
+                        <a class="dropdown-item " href="materias.html">Listado</a>
+                        <a class="dropdown-item nav-item active" href="clases.html">Clases</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown nav-item">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown">
+                        Personal docente
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item nav-item active" href="docentes.html">Personal docente</a>
+                        <a class="dropdown-item " href="plazas.html">Plazas</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="administrativos.html">Personal no docente</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="honorarios.html">Honorarios</a>
+                </li>
+            </ul>
+        </div>
+        <ul class="navbar-nav flex-row ml-sm-auto d-none d-sm-flex">
+            <li class="nav-item">
+                <a id="boton-agregar" class="p-2 nav-link" href="#modal-agregar" data-toggle="modal">
+                    <i class="fas fa-plus" data-toggle="tooltip" data-placement="bottom" title="Agregar clase">
+                    </i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a id="boton-eliminar-todo" class="p-2 nav-link" href="#modal-clases" data-toggle="modal">
+                    <i class="fa fa-times" data-toggle="tooltip" data-placement="bottom" title="Eliminar clases">
+                    </i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </li>
+        </ul>
+    </nav>
+    <!-- Selector de carreras  -->
+    <div class="selector-principal">
+        <select class="carreras custom-select"></select>
+    </div>
+    <!-- tabla de datos -->
+    <div class="table-responsive">
+        <table id="tabla-clases" class="table table-bordered table-sm">
+            <thead class="thead-dark">
+                <tr>
+                    <th rowspan="2">No. de profesor</th>
+                    <th rowspan="2">Nombre de profesor</th>
+                    <th rowspan="2">Materia</th>
+                    <th rowspan="2">Carrera</th>
+                    <th rowspan="2">Grupos</th>
+                    <th colspan="2">Acciones</th>
+                </tr>
+                <tr>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <!-- Modal de insercion -->
+    <div id="modal-agregar" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Nueva clase</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form id="form-agregar" novalidate>
+                    <div class="modal-body">
+                        <input type="text" name="operacion" value="insertar" hidden>
+                        <div class="form-row">
+                            <div class="selector-agregar col-md-6 mb-3">
+                                <label for="carrera"><b>Carrera</b></label>
+                                <select id="input-agregar" class="carreras form-control" name="carrera"></select>
+                            </div>
+                            <div class="selector-agregar col-md-6 mb-3">
+                                <label for="materia"><b>Materia</b></label>
+                                <select class="materia form-control" name="materia"></select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="selector-agregar col-md-12 mb-3">
+                                <label for="tipos"><b>Tipo de trabajador</b></label>
+                                <select class="tipos form-control" name="tipos">
+                                    <option value="docentes">Docentes</option>
+                                    <option value="honorarios">Honorarios</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="selector-agregar col-md-8 mb-3">
+                                <label for="profesor"><b>Profesor</b></label>
+                                <select class="profesor form-control" name="profesor"></select>
+                            </div>
+                            <div class="selector-agregar col-md-4 mb-3">
+                                <label for="grupos"><b>Grupos</b></label>
+                                <select class="grupos form-control" name="grupos">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancelar">
+                        <button type="submit" class="btn btn-success">Agregar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de eliminacion -->
+    <div id="modal-eliminar" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Eliminar clase</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form id="form-eliminar" novalidate>
+                    <div class="modal-body">
+                        <input type="text" name="operacion" value="eliminar" hidden>
+                        <input class="id" type="text" name="id" hidden>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="carrera"><b>Carrera</b></label>
+                                <input class="carreras form-control" type="text" name="carrera" disabled>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="materia"><b>Materia</b></label>
+                                <input class="materia form-control" type="text" name="materia" disabled>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-8 mb-3">
+                                <label for="profesor"><b>Profesor</b></label>
+                                <input class="profesor form-control" type="text" name="profesor" disabled>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="grupos"><b>Grupos</b></label>
+                                <input class="grupos form-control" type="text" name="grupos" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col">
+                                <p>Esta acción no se podrá deshacer</p>
+                            </div>
+                            <div class="col">
+                                <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancelar">
+                                <button type="submit" id="input-eliminar" class="btn btn-danger">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de edicion -->
+    <div id="modal-editar" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Editar clase</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form id="form-editar" novalidate>
+                    <div class="modal-body">
+                        <input type="text" name="operacion" value="editar" hidden>
+                        <input class="id" type="text" name="id" hidden>
+                        <div class="form-row">
+                            <div class="selector-editar col-md-6 mb-3">
+                                <label for="carrera"><b>Carrera</b></label>
+                                <select id="input-editar" class="carreras form-control" name="carrera"></select>
+                            </div>
+                            <div class="selector-editar col-md-6 mb-3">
+                                <label for="materia"><b>Materia</b></label>
+                                <select class="materia form-control" name="materia"></select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="selector-editar col-md-12 mb-3">
+                                <label for="tipos"><b>Tipo de trabajador</b></label>
+                                <select class="tipos form-control" name="tipos">
+                                    <option value="docentes">Docentes</option>
+                                    <option value="honorarios">Honorarios</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="selector-editar col-md-8 mb-3">
+                                <label for="profesor"><b>Profesor</b></label>
+                                <select class="profesor form-control" name="profesor"></select>
+                            </div>
+                            <div class="selector-editar col-md-4 mb-3">
+                                <label for="grupos"><b>Grupos</b></label>
+                                <select class="grupos form-control" name="grupos"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col">
+                                <p>Esta acción no se podrá deshacer</p>
+                            </div>
+                            <div class="col">
+                                <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancelar">
+                                <button type="submit" class="btn btn-warning">Editar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de eliminacion -->
+    <div id="modal-clases" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Eliminar clases</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form id="form-clases" novalidate>
+                    <input type="text" name="operacion" value="clases" hidden>
+                    <div class="modal-body">
+                        <h1 class="display-5">¿Desea eliminar todas las clases?</h1>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col">
+                                <p>Esta acción no se podrá deshacer</p>
+                            </div>
+                            <div class="col">
+                                <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancelar">
+                                <button type="submit" class="btn btn-danger">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script type='text/javascript' src="js/clases.js"></script>
+
+</html>

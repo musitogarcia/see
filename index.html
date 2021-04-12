@@ -1,0 +1,46 @@
+<html>
+
+<head>
+    <meta charset='utf-8' lang="es">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Inicio</title>
+    <link rel="shortcut icon" type="image/png" href="img/favicon.ico">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <script src="/popper/popper.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <link href="/fontawesome/css/all.css" rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgb(24, 57, 106);">
+            <a class="navbar-brand" href="index.html">
+                <img src="img/tecnm.png" width="120" class="p-2">Sistema para la Estructura Educativa
+            </a>
+        </nav>
+    </header>
+    <div class="jumbotron">
+        <h1 class="display-4">Elige el ciclo escolar</h1>
+        <form id="form-inicio">
+            <div class="selector form-group">
+                <select class="ciclo form-control" name="ciclo">
+                    <option value="AD">Agosto - Diciembre</option>
+                    <option value="EJ">Enero - Julio</option>
+                </select>
+            </div>
+            <div class="boton form-group">
+                <hr class="my-4">
+                <button class="editar btn btn-primary btn-lg" type="button" value="editar">
+                    Gestionar información</button>
+                <button disabled class="generar btn btn-success btn-lg" type="button" value="generar">
+                    Generar documentos Excel
+                </button>
+            </div>
+        </form>
+    </div>
+</body>
+<script src="js/index.js"></script>
+
+</html>

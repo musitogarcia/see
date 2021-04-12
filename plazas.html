@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' lang="es">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Plazas</title>
+    <link rel="shortcut icon" type="image/png" href="img/favicon.ico">
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <script src="/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <script src="/popper/popper.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.min.js"></script>
+    <link href="/fontawesome/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/DataTables/dataTables.min.css" />
+    <script type="text/javascript" src="/DataTables/dataTables.min.js"></script>
+    <script type="text/javascript" src="js/tabla.js"></script>
+</head>
+
+<body>
+    <!-- Barra de navegacion -->
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark" style="background-color: rgb(24, 57, 106);">
+        <a class="navbar-brand" href="index.html" data-toggle="tooltip" data-placement="bottom" title="Inicio">
+            <img src="img/tecnm.png" width="120">
+        </a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item ">
+                    <a class="nav-link" href="concentrado.html">Concentrado</a>
+                </li>
+                <li class="nav-item dropdown nav-item">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                        Materias
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item nav-item active" href="asignaturas.html">Por carrera</a>
+                        <a class="dropdown-item" href="materias.html">Listado</a>
+                        <a class="dropdown-item" href="clases.html">Clases</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown nav-item active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown">
+                        Personal docente
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item " href="docentes.html">Personal docente</a>
+                        <a class="dropdown-item nav-item active" href="plazas.html">Plazas</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="administrativos.html">Personal no docente</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="honorarios.html">Honorarios</a>
+                </li>
+            </ul>
+        </div>
+        <ul class="navbar-nav flex-row ml-sm-auto d-none d-sm-flex">
+            <li class="nav-item">
+                <a id="boton-agregar" class="p-2 nav-link" href="#modal-agregar" data-toggle="modal">
+                    <i class="fas fa-plus" data-toggle="tooltip" data-placement="bottom" title="Agregar plaza">
+                    </i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a id="boton-honorarios" class="p-2 nav-link" href="#modal-honorarios" data-toggle="modal">
+                    <i class="fas fa-user-tie" data-toggle="tooltip" data-placement="bottom"
+                        title="Cubrir con honorarios">
+                    </i>
+                </a>
+            </li>
+            <li class="nav-item">
+                <button class="navbar-toggler" type="button" data-toggle="collapse"
+                    data-target="#navbarSupportedContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </li>
+        </ul>
+    </nav>
+    <!-- Selector de areas educativas -->
+    <div class="selector-principal">
+        <select class="areas custom-select"></select>
+    </div>
+    <!-- tabla de datos -->
+    <div class="table-responsive">
+        <table id="tabla-plazas" class="table table-bordered table-hover table-sm">
+            <thead class="thead-dark">
+                <tr>
+                    <th rowspan="2">No. de Profesor</th>
+                    <th rowspan="2">Nombre de profesor</th>
+                    <th rowspan="2">Tipo de mov.</th>
+                    <th rowspan="2">Uni/Sub</th>
+                    <th rowspan="2">Categoria</th>
+                    <th rowspan="2">Horas</th>
+                    <th rowspan="2">Diagonal</th>
+                    <th colspan="2">Acciones</th>
+                </tr>
+                <tr>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <!-- Modal de insercion  -->
+    <div class="modal fade" id="modal-agregar" tabindex="-1" role="dialog">
+        <div class=" modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Agregar plaza a docente</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form id="form-agregar" novalidate>
+                    <div class="modal-body">
+                        <input type="text" name="operacion" value="insertar" hidden>
+                        <div class="form-row">
+                            <div class="selector-agregar col-md-8 mb-3">
+                                <label for="id-personal"><b>Profesor</b></label>
+                                <select id="input-agregar" class="profesor form-control" name="id-personal"></select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="movimiento"><b>Tipo de mov.</b></label>
+                                <select class="movimientos form-control" name="movimiento">
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="95">95</option>
+                                    <option value="97">97</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="unisub"><b>Unidad/Subunidad</b></label>
+                                <input class="form-control" type="number" placeholder="Ingresa la unidad y subunidad"
+                                    name="unisub" value="1402" min="1000" max="9999" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa una valor válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Valor válido
+                                </div>
+                            </div>
+                            <div class="selector-agregar col-md-6 mb-3">
+                                <label for="categoria"><b>Categoria</b></label>
+                                <select class="categorias form-control" name="categoria">
+                                    <option value="E3505">E3505</option>
+                                    <option value="E3507">E3507</option>
+                                    <option value="E3519">E3519</option>
+                                    <option value="E3521">E3521</option>
+                                    <option value="E3525">E3525</option>
+                                    <option value="E3615">E3615</option>
+                                    <option value="E3713">E3713</option>
+                                    <option value="E3715">E3715</option>
+                                    <option value="E3717">E3717</option>
+                                    <option value="E3811">E3811</option>
+                                    <option value="E3815">E3815</option>
+                                    <option value="E3817">E3817</option>
+                                    <option value="E3837">E3837</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="horas"><b>Horas de nombramiento</b></label>
+                                <select name="horas" class="horas form-control">
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="8">8</option>
+                                    <option value="16">16</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option value="36">36</option>
+                                    <option value="40">40</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="diagonal"><b>Diagonal</b></label>
+                                <input class="form-control" type="number" placeholder="Ingresa la diagonal"
+                                    name="diagonal" min="100000" max="999999" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa una valor válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Valor válido
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancelar">
+                        <button type="submit" class="btn btn-success">Agregar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de eliminacion -->
+    <div id="modal-eliminar" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Eliminar plaza</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form id="form-eliminar" novalidate>
+                    <div id="modal-eliminar" class="modal-body">
+                        <input type="text" name="operacion" value="eliminar" hidden>
+                        <input class="id" type="text" name="id" hidden>
+                        <div class="form-row">
+                            <div class="col-md-7 mb-3">
+                                <label for="profesor"><b>Profesor</b></label>
+                                <input class="profesor form-control" type="text" name="profesor" disabled>
+                            </div>
+                            <div class="col-md-5 mb-3">
+                                <label for="plaza"><b>Plaza</b></label>
+                                <input class="plaza form-control" type="text" name="plaza" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col">
+                                <p>Esta acción no se podrá deshacer</p>
+                            </div>
+                            <div class="col">
+                                <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancelar">
+                                <button id="input-eliminar" type="submit" class="btn btn-danger">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal editar  -->
+    <div id="modal-editar" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Editar plaza</h4>
+                    <button type=" button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form id="form-editar" novalidate>
+                    <div class="modal-body">
+                        <input type="text" name="operacion" value="editar" hidden>
+                        <input class="id" type="text" name="id" hidden>
+                        <div class="form-row">
+                            <div class="selector-editar col-md-8 mb-3">
+                                <label for="id-personal"><b>Profesor</b></label>
+                                <select id="input-editar" class="profesor form-control" name="id-personal"></select>
+                            </div>
+                            <div class="selector-editar col-md-4 mb-3">
+                                <label for="movimiento"><b>Tipo de mov.</b></label>
+                                <select name="movimiento" class="movimientos form-control"></select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="unisub"><b>Unidad/Subunidad</b></label>
+                                <input class="unisub form-control" type="number"
+                                    placeholder="Ingresa la unidad y subunidad" name="unisub" min="1000" max="9999"
+                                    required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa una valor válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Valor válido
+                                </div>
+                            </div>
+                            <div class="selector-editar col-md-6 mb-3">
+                                <label for="categoria"><b>Categoria</b></label>
+                                <select class="categorias form-control" name="categoria"></select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="selector-editar col-md-6 mb-3">
+                                <label for="horas"><b>Horas de nombramiento</b></label>
+                                <select name="horas" class="horas form-control"></select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="diagonal"><b>Diagonal</b></label>
+                                <input class="diagonal form-control" type="number" name="diagonal" min="100000"
+                                    max="999999" required>
+                                <div class="invalid-feedback">
+                                    Por favor ingresa una valor válido
+                                </div>
+                                <div class="valid-feedback">
+                                    Valor válido
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col">
+                                <p>Esta acción no se podrá deshacer</p>
+                            </div>
+                            <div class="col">
+                                <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancelar">
+                                <button type="submit" class="btn btn-warning">Editar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal de honorarios -->
+    <div id="modal-honorarios" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Cubrir con honorarios</h4>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <form id="form-honorarios" novalidate>
+                    <div id="modal-honorarios" class="modal-body">
+                        <input type="text" name="operacion" value="honorarios" hidden>
+                        <input class="id" type="text" name="id" hidden>
+                        <div class="form-group selector-honorarios">
+                            <label for="plaza">Plaza a cubrir</label>
+                            <select id="input-honorarios" class="plazas form-control" name="plaza"></select>
+                        </div>
+                        <div class="form-group selector-honorarios">
+                            <label for="honorario">Trabajador por honorarios</label>
+                            <select class="honorarios form-control" name="honorario"></select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col">
+                                <p>Esta acción no se podrá deshacer</p>
+                            </div>
+                            <div class="col">
+                                <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancelar">
+                                <button type="submit" class="btn btn-primary">Registrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script type='text/javascript' src="js/plazas.js"></script>
+
+</html>
